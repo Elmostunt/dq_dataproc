@@ -1,4 +1,4 @@
-import pandas as pd
+
 import subprocess
 import os.path
 import json
@@ -17,14 +17,14 @@ from google.cloud import bigquery
 #-none_column
 #    Recibe un dataframe e identifica las columnas completamente vacías.
 def none_column(df):
-    column = list(df)
-    number_row = df.shape[0]
-    field_null = " "
-    for k in range(0,len(column)):
-        count_none = df[column[k]].isnull().sum()
-        if count_none == number_row:
-            del df[column[k]]
-            field_null = "{} / {}".format(column[k],field_null)
+#   column = list(df)
+#    number_row = df.shape[0]
+     field_null = " "
+#    for k in range(0,len(column)):
+#        count_none = df[column[k]].isnull().sum()
+#        if count_none == number_row:
+#            del df[column[k]]
+#           field_null = "{} / {}".format(column[k],field_null)
 
     return df,str(field_null)
 
@@ -32,10 +32,13 @@ def none_column(df):
 #-extract_last_modified
 #    De la metadata de la tabla se extrea valores específicos del .json, en este caso fecha de modificación (valor en epoch), tamaño de la tabla, total de registros (filas).
 def extract_last_modified(table_id,client):
-    table = client.get_table(table_id)
-    date_modified = table.modified
-    size_table = table.num_bytes
-    count_row = table.num_rows
+    #table = client.get_table(table_id)
+    #date_modified = table.modified
+    date_modified=""
+    #size_table = table.num_bytes
+    size_table=1000
+    #count_row = table.num_rows
+    count_row=1
     return date_modified, str(size_table), count_row
 
 
@@ -71,32 +74,35 @@ def variation_days(date_modified):
 #    return count_specific
 
 def filter_fast_values(df,value_list):
-    if len(value_list)==0:
-        value_list = [""]
-    dim =list(df)
-    count_specific = []
-    for i in range(0,len(dim)):
-        field = dim[i]
-        count = 0
-        v_counts = df[field].value_counts()
-        for value in value_list:
-            if value in v_counts:
-                count=+v_counts[value]
-        count_specific.append(count)
+    count_specific = 0
+#    if len(value_list)==0:
+#        value_list = [""]
+#    dim =list(df)
+#    count_specific = []
+#    for i in range(0,len(dim)):
+#        field = dim[i]
+#        count = 0
+#        v_counts = df[field].value_counts()
+#        for value in value_list:
+#            if value in v_counts:
+#                count=+v_counts[value]
+#        count_specific.append(count)
     return count_specific
 
 
 #-unique_group
 #    Se le pasa un dataframe junto un listado de campos específicos y calcular la unicidad de sus registros.
 def unique_group(df,array_field):
-    if len(array_field)==0:
-        unique_sub_table = 0
-    else:
-        unique_sub_table = df[array_field].drop_duplicates().shape[0]
-    group_field = ''
-    for j in range(0,len(array_field)):
-        group_field = "{}|{}".format(array_field[j],group_field)
-    
+    unique_sub_table=0
+    group_field=0
+#    if len(array_field)==0:
+#        unique_sub_table = 0
+#    else:
+#        unique_sub_table = df[array_field].drop_duplicates().shape[0]
+#    group_field = ''
+#    for j in range(0,len(array_field)):
+#        group_field = "{}|{}".format(array_field[j],group_field)
+#    
     return unique_sub_table, group_field
 
 
